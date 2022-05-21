@@ -1,5 +1,6 @@
 import puppeteer from 'puppeteer';
 import { format } from 'date-fns';
+import { PuppeteerScreenRecorder } from 'puppeteer-screen-recorder';
 
 const GOSUSLUGI_LOGIN = '';
 const GOSUSLUGI_PASSWORD = '';
@@ -16,6 +17,17 @@ const TODAY_DATE = format(new Date(), 'dd.MM.yyyy');
   const page = await browser.newPage();
   const timeout = 5000;
   page.setDefaultTimeout(timeout);
+
+  const screenRecordingConfig = {
+    followNewTab: true,
+    fps: 25,
+    videoFrame: {
+      width: 1366,
+      height: 786,
+    },
+    aspectRatio: '16:9',
+  };
+  const recorder = new PuppeteerScreenRecorder(page, screenRecordingConfig);
 
   async function waitForSelectors(selectors, frame, options) {
     for (const selector of selectors) {
@@ -171,13 +183,16 @@ const TODAY_DATE = format(new Date(), 'dd.MM.yyyy');
   }
   {
     const targetPage = page;
-    await targetPage.setViewport({ width: 1280, height: 720 });
+    await targetPage.setViewport(screenRecordingConfig.videoFrame);
   }
   {
     const targetPage = page;
     const promises = [];
     promises.push(targetPage.waitForNavigation());
+
+    await recorder.start('./temp/report.mp4');
     await targetPage.goto('https://dom.gosuslugi.ru/');
+
     await Promise.all(promises);
   }
   {
@@ -416,5 +431,6 @@ const TODAY_DATE = format(new Date(), 'dd.MM.yyyy');
     await element.click({ offset: { x: 14.34375, y: 13.40625 } });
   }
 
+  await recorder.stop();
   await browser.close();
 })();
