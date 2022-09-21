@@ -379,50 +379,48 @@ const TODAY_DATE = format(new Date(), 'dd.MM.yyyy');
 
   const formSelector = `form[name="form.spug1Form"]`;
 
+  // INFO: simple table representation
+  // 21524675	Холодная вода 10.01 м[3*] __.__.____
+  // 21535901	Горячая вода 9.37 м[3*] __.__.____
+
   // Cold water
   {
     const targetPage = page;
-    const element = await waitForSelector(
-      [`${formSelector} table tr:nth-of-type(2) input.form-control[size]`],
+
+    const table = await waitForSelector(
+      [`${formSelector} table tbody`],
       targetPage,
-      { timeout, visible: true }
+      {
+        timeout,
+        visible: true,
+      }
     );
 
-    await element.type(COLD_WATER_NEW_VALUE);
-  }
-  {
-    const targetPage = page;
-    const element = await waitForSelector(
-      [
-        `${formSelector} table tr:nth-of-type(2) input.form-control.datePickerStringInput`,
-      ],
-      targetPage,
-      { timeout, visible: true }
-    );
-    await element.type(TODAY_DATE);
+    const [tr] = await table.$x(`//tr[contains(., '${COLD_WATER_ID}')]`);
+
+    const valueInput = await tr.$(`input.form-control[size]`);
+    await valueInput.type(COLD_WATER_NEW_VALUE);
+
+    const dateInput = await tr.$(`input.form-control.datePickerStringInput`);
+    await dateInput.type(TODAY_DATE);
   }
 
   // Hot water
   {
     const targetPage = page;
-    const element = await waitForSelector(
-      [`${formSelector} table tr:nth-of-type(3) input.form-control[size]`],
-      targetPage,
-      { timeout, visible: true }
-    );
 
-    await element.type(HOT_WATER_NEW_VALUE);
-  }
-  {
-    const targetPage = page;
-    const element = await waitForSelector(
-      [
-        `${formSelector} table tr:nth-of-type(3) input.form-control.datePickerStringInput`,
-      ],
-      targetPage,
-      { timeout, visible: true }
-    );
-    await element.type(TODAY_DATE);
+    const table = await waitForSelector([`${formSelector} table`], targetPage, {
+      timeout,
+      visible: true,
+    });
+
+    const [tr] = await table.$x(`//tr[contains(., '${HOT_WATER_ID}')]`);
+
+    const valueInput = await tr.$(`input.form-control[size]`);
+    await valueInput.type(HOT_WATER_NEW_VALUE);
+
+    const dateInput = await tr.$(`input.form-control.datePickerStringInput`);
+    await dateInput.type(TODAY_DATE);
   }
 
   // Submit
