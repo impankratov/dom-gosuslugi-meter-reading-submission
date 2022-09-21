@@ -21,7 +21,8 @@ const TODAY_DATE = format(new Date(), 'dd.MM.yyyy');
     headless: false,
   });
   const page = await browser.newPage();
-  const timeout = 5000;
+
+  const timeout = 10000;
   page.setDefaultTimeout(timeout);
 
   const screenRecordingConfig = {
@@ -194,7 +195,7 @@ const TODAY_DATE = format(new Date(), 'dd.MM.yyyy');
   {
     const targetPage = page;
     const promises = [];
-    promises.push(targetPage.waitForNavigation());
+    promises.push(targetPage.waitForNavigation({ timeout }));
 
     await recorder.start('./temp/report.mp4');
     await targetPage.goto('https://dom.gosuslugi.ru/');
