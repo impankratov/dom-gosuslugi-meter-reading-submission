@@ -1,12 +1,18 @@
-import puppeteer from 'puppeteer';
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 import { format } from 'date-fns';
+import puppeteer from 'puppeteer';
 import { PuppeteerScreenRecorder } from 'puppeteer-screen-recorder';
 
-const GOSUSLUGI_LOGIN = '';
-const GOSUSLUGI_PASSWORD = '';
+const GOSUSLUGI_LOGIN = process.env.GOSUSLUGI_LOGIN;
+const GOSUSLUGI_PASSWORD = process.env.GOSUSLUGI_PASSWORD;
 
-const COLD_WATER_NEW_VALUE = '';
-const HOT_WATER_NEW_VALUE = '';
+const COLD_WATER_ID = process.env.COLD_WATER_ID;
+const COLD_WATER_NEW_VALUE = process.env.COLD_WATER_NEW_VALUE;
+
+const HOT_WATER_ID = process.env.HOT_WATER_ID;
+const HOT_WATER_NEW_VALUE = process.env.HOT_WATER_NEW_VALUE;
 
 const TODAY_DATE = format(new Date(), 'dd.MM.yyyy');
 
