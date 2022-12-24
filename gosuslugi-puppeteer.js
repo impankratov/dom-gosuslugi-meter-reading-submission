@@ -343,23 +343,6 @@ const TODAY_DATE = format(new Date(), 'dd.MM.yyyy');
     await element.click({ offset: { x: 66.671875, y: 28.5 } });
   }
 
-  // Click second time, somehow first time doesn't work
-  {
-    const targetPage = page;
-    let frame = targetPage.mainFrame();
-    const element = await waitForSelectors(
-      [
-        [
-          'body > div.page-wrapper > div.app-content-wrapper > div > div > ef-ppa-lk-grzh > div > div > div > div > div.row > div.col-xs-8 > ef-ppa-lk-grzh-tiles > div:nth-child(1) > div.row > div:nth-child(3) > div > a > div.citizen-cabinet__tile-button-label.ng-scope > div > span:nth-child(1)',
-        ],
-      ],
-      frame,
-      { timeout: timeout * 5, visible: true }
-    );
-    await scrollIntoViewIfNeeded(element, timeout);
-    await element.click({ offset: { x: 66.671875, y: 28.5 } });
-  }
-
   // Close alert
   {
     const targetPage = page;
