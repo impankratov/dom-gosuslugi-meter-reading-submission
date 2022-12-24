@@ -18,7 +18,7 @@ const TODAY_DATE = format(new Date(), 'dd.MM.yyyy');
 
 (async () => {
   const browser = await puppeteer.launch({
-    headless: false,
+    headless: true,
   });
   const page = await browser.newPage();
 
