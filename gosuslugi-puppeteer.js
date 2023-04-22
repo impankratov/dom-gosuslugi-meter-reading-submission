@@ -222,94 +222,37 @@ const TODAY_DATE = format(new Date(), 'dd.MM.yyyy');
   }
   {
     const targetPage = page;
-    const element = await waitForSelectors(
-      [['aria/Телефон / Email / СНИЛС'], ['#login']],
-      targetPage,
-      { timeout, visible: true }
-    );
+    const element = await waitForSelector(['input#login'], targetPage, {
+      timeout,
+      visible: true,
+    });
+
     await scrollIntoViewIfNeeded(element, timeout);
-    await element.click({ offset: { x: 100.5, y: 14 } });
+
+    await element.type(GOSUSLUGI_LOGIN);
   }
   {
     const targetPage = page;
-    const element = await waitForSelectors(
-      [['aria/Телефон / Email / СНИЛС'], ['#login']],
-      targetPage,
-      { timeout, visible: true }
-    );
+    const element = await waitForSelectors(['input#password'], targetPage, {
+      timeout,
+      visible: true,
+    });
+
     await scrollIntoViewIfNeeded(element, timeout);
-    const type = await element.evaluate((el) => el.type);
-    if (
-      [
-        'textarea',
-        'select-one',
-        'text',
-        'url',
-        'tel',
-        'search',
-        'password',
-        'number',
-        'email',
-      ].includes(type)
-    ) {
-      await element.type(GOSUSLUGI_LOGIN);
-    } else {
-      await element.focus();
-      await element.evaluate((el, value) => {
-        el.value = value;
-        el.dispatchEvent(new Event('input', { bubbles: true }));
-        el.dispatchEvent(new Event('change', { bubbles: true }));
-      }, GOSUSLUGI_LOGIN);
-    }
+
+    await element.type(GOSUSLUGI_PASSWORD);
   }
-  {
-    const targetPage = page;
-    const element = await waitForSelectors(
-      [['aria/Пароль'], ['#password']],
-      targetPage,
-      { timeout, visible: true }
-    );
-    await scrollIntoViewIfNeeded(element, timeout);
-    const type = await element.evaluate((el) => el.type);
-    if (
-      [
-        'textarea',
-        'select-one',
-        'text',
-        'url',
-        'tel',
-        'search',
-        'password',
-        'number',
-        'email',
-      ].includes(type)
-    ) {
-      await element.type(GOSUSLUGI_PASSWORD);
-    } else {
-      await element.focus();
-      await element.evaluate((el, value) => {
-        el.value = value;
-        el.dispatchEvent(new Event('input', { bubbles: true }));
-        el.dispatchEvent(new Event('change', { bubbles: true }));
-      }, GOSUSLUGI_PASSWORD);
-    }
-  }
+  // Submit form
   {
     const targetPage = page;
     const promises = [];
     promises.push(targetPage.waitForNavigation());
-    const element = await waitForSelectors(
-      [
-        ['aria/Войти'],
-        [
-          'body > esia-root > div > esia-idp > div > div.form-container.mb-20.mb-md-40 > form > div.mb-24 > button',
-        ],
-      ],
-      targetPage,
-      { timeout, visible: true }
-    );
+    const element = await waitForSelector(['body form'], targetPage, {
+      timeout,
+      visible: true,
+    });
     await scrollIntoViewIfNeeded(element, timeout);
-    await element.click({ offset: { x: 138.5, y: 22 } });
+    await element.press('Enter');
     await Promise.all(promises);
   }
   {
@@ -337,7 +280,7 @@ const TODAY_DATE = format(new Date(), 'dd.MM.yyyy');
         ],
       ],
       frame,
-      { timeout: timeout * 5, visible: true }
+      { timeout: timeout * 10, visible: true }
     );
     await scrollIntoViewIfNeeded(element, timeout);
     await element.click({ offset: { x: 66.671875, y: 28.5 } });
